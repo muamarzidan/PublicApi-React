@@ -1,4 +1,3 @@
-
 import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -17,41 +16,40 @@ function App() {
     try {
       const { data } = await axios.get('https://api.publicapis.org/categories');
       // console.log([data]);
-      setCategories([data]);
-
+      setCategories(data.categories);
     } catch(err) {
       console.log(err, '<== error retrieve categories');
     }
 
-    const handleChange = (e) => {
-      setSearch(e.target.value)
-    }
-    const handleSubmit = async (e) => {
-      try {
-        e.preventDefault();
+    // const handleChange = (e) => {
+    //   setSearch(e.target.value)
+    // }
+    // const handleSubmit = async (e) => {
+    //   try {
+    //     e.preventDefault();
         
-        const { data } = await axios.get('https://api.publicapis.org/entries?category=${search}')
-        console.log(data, '<== response handle submit');
+    //     const { data } = await axios.get('https://api.publicapis.org/entries?category=${search}')
+    //     console.log(data, '<== response handle submit');
 
-      } catch(err) {
-        console.log(err, '<== error handle submit');
-      }
-    }
+    //   } catch(err) {
+    //     console.log(err, '<== error handle submit');
+    //   }
+    // }
   }
 
   return (
     <div className="App">
-
-      <h1>Serach data API</h1> <br />
-
+      <h1>Seacrh data API</h1> <br />
       <form>
           <input/>
           <button>Seacrh</button>
       </form>
-      
-      {categories && categories.map((category, index) => {
-  <li key={index} > {category} </li>
-} )}
+
+      <ul>
+        {categories && categories.map((category, index) => (
+           <li key={index} > {category} </li>
+        ))}
+      </ul>
     </div>
   );
 }
