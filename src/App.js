@@ -6,17 +6,19 @@ function App() {
 
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState();
-  const [dataSearched, setDataSearched] = useState();
+  const [dataSearched, setDataSearched] = useState()
 
-    useEffect(() => {
-      retrieveCategories()
-    }, []);
+  useEffect(() => {
+    retrieveCategories()
+  }, []);
 
   const retrieveCategories = async () => {
     try {
       const { data } = await axios.get('https://api.publicapis.org/categories');
-      // console.log([data]);
       setCategories(data.categories);
+      const { datasearch } = await axios.get('https://api.publicapis.org/entries?category=${search}');
+      setCategories(data.categories);
+      
     } catch(err) {
       console.log(err, '<== error retrieve categories');
     }
@@ -24,32 +26,46 @@ function App() {
     // const handleChange = (e) => {
     //   setSearch(e.target.value)
     // }
+
     // const handleSubmit = async (e) => {
     //   try {
     //     e.preventDefault();
-        
     //     const { data } = await axios.get('https://api.publicapis.org/entries?category=${search}')
-    //     console.log(data, '<== response handle submit');
+    //     // console.log(data, '<== response handle submit');
+    //     setDataSearched(data);
 
-    //   } catch(err) {
+    //   }catch(err) {
     //     console.log(err, '<== error handle submit');
     //   }
     // }
   }
 
+
   return (
     <div className="App">
       <h1>Seacrh data API</h1> <br />
-      <form>
-          <input/>
-          <button>Seacrh</button>
-      </form>
+        <form onSubmit={retrieveCategories.handleSubmit}>
+            <input onChange={retrieveCategories.handleChange}/>
+            <button>Seacrh</button>
+        </form>
+        <br />
 
-      <ul>
-        {categories && categories.map((category, index) => (
-           <li key={index} > {category} </li>
-        ))}
-      </ul>
+        {/* {JSON.stringify(categories)}  */}
+        {JSON.stringify(dataSearched)}
+        {/* <ul>
+          {dataSearched && dataSearched.map((data, index) => {
+            console.log(data, '<== data searched');
+            return (
+              <>
+                <li>{data.API}</li>
+                <li>{data.Category}</li>
+                <li>{data.Link}</li>
+                <br />
+                <br />
+              </>
+            )
+          })}
+        </ul> */}
     </div>
   );
 }
@@ -57,7 +73,13 @@ function App() {
 export default App;
 
 
+        {/* {JSON.stringify(dataSearched)}; */}
 
+        {/* <ul>
+          {categories && categories.map((category, index) => {
+            return <li key={index} > {category} </li>
+           })}
+        </ul> */}
 {/* {JSON.stringify(categories)}  */}
 {/* {JSON.stringify(categories)} onSubmit={handleSubmit} onChange={handleChange}*/}
 {/* <p>{categories}</p> */}
